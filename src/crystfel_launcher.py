@@ -31,8 +31,10 @@ __date__ = "19/07/2022"
 __copyright__ = "2022, ESRF, Grenoble"
 __contact__ = "gianluca.santoni@esrf.fr"
 
+from asyncio.windows_events import NULL
 import os
 import json
+import h5py
 
 class Crystfel_launcher():
     def __init__(self, imgdir, prefix, **kwargs):
@@ -49,6 +51,10 @@ class Crystfel_launcher():
         self.threshold = kwargs.get('threshold', '10')  # grid of 5, 10, 20
         self.local_bg_radius = kwargs.get('local_bg_radius', '10')  # grid of 7, 10, 15, 20
         self.min_res = kwargs.get('min_res', '70')
+        #MISSING: geometry and camera length and beam center: must be read from h5 metadata and not in the geometry file.
+
+    def getHeaderInfo(self):
+        return(NULL)
 
     def prepareLaunchCommand(self):
         launch_script = ('indexamajig'

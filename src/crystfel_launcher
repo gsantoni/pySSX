@@ -43,6 +43,10 @@ class Crystfel_launcher():
         self.index_method = kwargs.get('indexing_method', 'xgandalf')
         #peakfinding will be chagned to h5 once the peakfinder function is working
         self.peakfinding_method = kwargs.get('peakfinder', 'peakfinder8')
-        
-  
+        self.peaks_radius = kwargs.get('peak_radius', '3,4,5')
+        self.min_snr = kwargs.get('min_snr', '4.0')  # grid of 3, 4, 5
+        self.threshold = kwargs.get('threshold', '10')  # grid of 5, 10, 20
+        self.local_bg_radius = kwargs.get('local_bg_radius', '10')  # grid of 7, 10, 15, 20
+        self.min_res = kwargs.get('min_res', '70')
+
     def prepareLaunchCommand(self):

@@ -32,7 +32,17 @@ __copyright__ = "2022, ESRF, Grenoble"
 __contact__ = "gianluca.santoni@esrf.fr"
 
 import os
-import fabio
-from pyFAI.opencl import peak_finder
-
-
+import 
+class Crystfel_launcher():
+    def __init__(self, imgdir, prefix, **kwargs):
+        self.datadir = imgdir
+        self.imgname = prefix
+        #need to add here crystfel path, to check with EGI how to better do it
+        #also needs all crystfel inputs to define where the experiment was. Need a repo for geometry files and masks.
+        
+        self.index_method = kwargs.get('indexing_method', 'xgandalf')
+        #peakfinding will be chagned to h5 once the peakfinder function is working
+        self.peakfinding_method = kwargs.get('peakfinder', 'peakfinder8')
+        
+  
+    def prepareLaunchCommand(self):

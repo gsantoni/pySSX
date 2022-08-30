@@ -32,7 +32,7 @@ __copyright__ = "2022, ESRF, Grenoble"
 __contact__ = "gianluca.santoni@esrf.fr"
 
 from asyncio.windows_events import NULL
-import os
+import subprocess
 import json
 import h5py
 
@@ -63,7 +63,10 @@ class Crystfel_launcher():
                         ' --threshold='+ self.threshold+
                         ' --int-radius='+self.peaks_radius+
                         ' --indexing='+ self.index_method)
-        print(launch_script)
+        return(launch_script)
+
+    def launchProcess(self):
+        subprocess.Popen(self.prepareLaunchCommand, shell=True)
 
 def main():
     A = Crystfel_launcher("a", "b")

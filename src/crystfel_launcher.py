@@ -31,7 +31,6 @@ __date__ = "19/07/2022"
 __copyright__ = "2022, ESRF, Grenoble"
 __contact__ = "gianluca.santoni@esrf.fr"
 
-from asyncio.windows_events import NULL
 import subprocess
 import json
 import h5py
@@ -42,19 +41,27 @@ class Crystfel_launcher():
         self.imgname = prefix
         #need to add here crystfel path, to check with EGI how to better do it
         #also needs all crystfel inputs to define where the experiment was. Need a repo for geometry files and masks.
-        
+        #Geometry files should correspond to the beamline naming. Prepare a helper for this.
+        self.beamline = kwargs.get('beamline', 'id30a3')
         self.index_method = kwargs.get('indexing_method', 'xgandalf')
         #peakfinding will be chagned to h5 once the peakfinder function is working
         self.peakfinding_method = kwargs.get('peakfinder', 'peakfinder8')
         self.peaks_radius = kwargs.get('peak_radius', '3,4,5')
-        self.min_snr = kwargs.get('min_snr', '4.0')  # grid of 3, 4, 5
-        self.threshold = kwargs.get('threshold', '10')  # grid of 5, 10, 20
-        self.local_bg_radius = kwargs.get('local_bg_radius', '10')  # grid of 7, 10, 15, 20
+        self.min_snr = kwargs.get('min_snr', '4.0') 
+        self.threshold = kwargs.get('threshold', '10')
+        self.local_bg_radius = kwargs.get('local_bg_radius', '10') 
         self.min_res = kwargs.get('min_res', '70')
         #MISSING: geometry and camera length and beam center: must be read from h5 metadata and not in the geometry file.
 
     def getHeaderInfo(self):
         return(NULL)
+
+ #this function should take care of dispatching different groups of frames to different processing runs 
+ # (no need to merge before partialator)
+    
+    def splitFilesList(self):
+        return(NULL)
+
 
     def prepareLaunchCommand(self):
         launch_script = ('indexamajig'
@@ -67,6 +74,7 @@ class Crystfel_launcher():
 
     def launchProcess(self):
         subprocess.Popen(self.prepareLaunchCommand, shell=True)
+    
 
 def main():
     A = Crystfel_launcher("a", "b")

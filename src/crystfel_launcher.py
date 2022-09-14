@@ -31,9 +31,11 @@ __date__ = "19/07/2022"
 __copyright__ = "2022, ESRF, Grenoble"
 __contact__ = "gianluca.santoni@esrf.fr"
 
+from asyncio.windows_events import NULL
 import subprocess
 import json
 import h5py
+import os
 
 class Crystfel_launcher():
     def __init__(self, imgdir, prefix, **kwargs):
@@ -58,10 +60,18 @@ class Crystfel_launcher():
 
  #this function should take care of dispatching different groups of frames to different processing runs 
  # (no need to merge before partialator)
+ #we can loop on the h5 files only this way
     
     def splitFilesList(self):
-        return(NULL)
+        dataFiles = []
+        for images in os.listdir(self.datadir):
+            if images.endswith('h5'):
+                dataFiles.append(images)
+        return(dataFiles)
 
+    def selectGeometryFile(self):
+        beamlinesDB = {'id30a3':'./geometries/Eiger4m.geom'}
+        return(beamlinesDB[self.beamline])
 
     def prepareLaunchCommand(self):
         launch_script = ('indexamajig'
@@ -72,8 +82,14 @@ class Crystfel_launcher():
                         ' --indexing='+ self.index_method)
         return(launch_script)
 
+    #following function launches a basic single process in the local shell
+
     def launchProcess(self):
         subprocess.Popen(self.prepareLaunchCommand, shell=True)
+
+    #here to be used to launch jobs on slurm (TBD)
+    def launchClusterJob(self):
+        return(NULL)
     
 
 def main():

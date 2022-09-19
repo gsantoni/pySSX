@@ -31,7 +31,6 @@ __date__ = "19/07/2022"
 __copyright__ = "2022, ESRF, Grenoble"
 __contact__ = "gianluca.santoni@esrf.fr"
 
-from asyncio.windows_events import NULL
 import subprocess
 import json
 import h5py
@@ -57,6 +56,17 @@ class Crystfel_launcher():
 
     def getHeaderInfo(self):
         return(NULL)
+
+#create working directory and returns the path to it
+
+    def createWorkingDirectory(self):
+        if os.path.exists(self.datadir+'/process'):
+            return(self.datadir+'/process') 
+        else:
+            os.mkdir(self.datadir+'/process')
+            return(self.datadir+'/process')
+
+
 
  #this function should take care of dispatching different groups of frames to different processing runs 
  # (no need to merge before partialator)

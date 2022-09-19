@@ -6,3 +6,5 @@ __version__ = "0.1"
 __maintainer__ = "Gianluca Santoni"
 __email__ = "gianluca.santoni@esrf.fr"
 __status__ = "pre-alpha"
+
+from . import crystfel_launcher

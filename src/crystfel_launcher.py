@@ -53,6 +53,7 @@ class Crystfel_launcher():
         self.local_bg_radius = kwargs.get('local_bg_radius', '10') 
         self.min_res = kwargs.get('min_res', '70')
         #MISSING: geometry and camera length and beam center: must be read from h5 metadata and not in the geometry file.
+        self.workingDirectory = self.createWorkingDirectory()
 
     def getHeaderInfo(self):
         return(NULL)
@@ -66,12 +67,18 @@ class Crystfel_launcher():
             os.mkdir(self.datadir+'/process')
             return(self.datadir+'/process')
 
+#generate input list for crystfel from datadir path into working dir
+
+    def createInputList(self):
+        inputs = self.splitFilesList()
+        with open(self.datadir+'/process/files.lst', 'w') as fp:
+            for i in inputs:
+                fp.write("%s /n" %i)
 
 
  #this function should take care of dispatching different groups of frames to different processing runs 
  # (no need to merge before partialator)
- #we can loop on the h5 files only this way
-    
+ #we can loop on the h5 files only this way  
     def splitFilesList(self):
         dataFiles = []
         for images in os.listdir(self.datadir):
@@ -104,7 +111,9 @@ class Crystfel_launcher():
 
 def main():
     A = Crystfel_launcher("a", "b")
+    A.createInputList()
     A.prepareLaunchCommand()
+    
 
 if __name__== '__main__':
     main()

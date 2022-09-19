@@ -35,6 +35,7 @@ import subprocess
 import json
 import h5py
 import os
+from datetime import datetime
 
 class Crystfel_launcher():
     def __init__(self, imgdir, prefix, **kwargs):
@@ -61,11 +62,13 @@ class Crystfel_launcher():
 #create working directory and returns the path to it
 
     def createWorkingDirectory(self):
-        if os.path.exists(self.datadir+'/process'):
-            return(self.datadir+'/process') 
+        time = datetime.now()
+        process_timing = time.strftime("%Y%m%d%H%M").replace("/", "")
+        if os.path.exists(self.datadir+'/process_%s' %process_timing):
+            return(self.datadir+'/process_%s' %process_timing) 
         else:
-            os.mkdir(self.datadir+'/process')
-            return(self.datadir+'/process')
+            os.mkdir(self.datadir+'/process_%s' %process_timing)
+            return(self.datadir+'/process_%s' %process_timing)
 
 #generate input list for crystfel from datadir path into working dir
 
@@ -73,7 +76,7 @@ class Crystfel_launcher():
         inputs = self.splitFilesList()
         with open(self.datadir+'/process/files.lst', 'w') as fp:
             for i in inputs:
-                fp.write("%s /n" %i)
+                fp.write("%s \n" %i)
 
 
  #this function should take care of dispatching different groups of frames to different processing runs 

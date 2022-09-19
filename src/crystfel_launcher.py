@@ -102,7 +102,7 @@ class Crystfel_launcher():
     #following function launches a basic single process in the local shell
 
     def launchProcess(self):
-        subprocess.Popen(self.prepareLaunchCommand, shell=True)
+        subprocess.Popen(self.prepareLaunchCommand, shell=True, cwd=self.workingDirectory)
 
     #here to be used to launch jobs on slurm (TBD)
     def launchClusterJob(self):
